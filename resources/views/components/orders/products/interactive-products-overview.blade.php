@@ -46,7 +46,8 @@
         <input type="hidden" name="table_id" value="{{ $table->id }}">
         <div class="text-center flex gap-6 justify-center">
             <x-buttons.action-button :label="$labelSubmit" />
-            <x-buttons.action-button name="finalize" color="green" label="Finalize Order" iconClass="clipboard-list" />
+            <x-buttons.action-button value="finalize" name="finalize" color="green" label="Finalize Order"
+                iconClass="clipboard-list" />
         </div>
     </form>
 </div>

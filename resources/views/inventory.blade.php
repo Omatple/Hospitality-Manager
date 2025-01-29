@@ -6,7 +6,6 @@
 @section('content')
     <x-items.link-big-card title="Categories" color="blue" icon="tags" :url="route('categories.index')"
         description="Organize your categories to structure your inventory effectively." />
-
     <x-items.link-big-card title="Products" color="green" icon="box" :url="route('products.index')"
         description="Add, update, and manage all products in your inventory." />
 @endsection

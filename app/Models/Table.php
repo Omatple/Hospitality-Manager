@@ -12,6 +12,7 @@ class Table extends Model
     use HasFactory;
 
     protected $fillable = ["number", "status"];
+    public $timestamps = false;
 
     /**
      * Get all of the orders for the Table

@@ -6,10 +6,11 @@ use App\Models\Table;
 use App\Models\Order;
 use App\Models\Category;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 
 class TableService
 {
-    public function getLastOrder(Table $table)
+    public function getLastOrder(Table $table): Order|null
     {
         return Order::with('products')
             ->where('table_id', $table->id)
@@ -17,12 +18,12 @@ class TableService
             ->first();
     }
 
-    public function getCategoriesWithProducts()
+    public function getCategoriesWithProducts(): Collection
     {
         return Category::with('products')->orderBy('name')->get();
     }
 
-    public function getAllUsers()
+    public function getAllUsers(): Collection
     {
         return User::orderBy('name')->get();
     }

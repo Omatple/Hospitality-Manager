@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -12,16 +14,19 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(?int $category_id = null): View
     {
-        $productCollection = Product::with("category")->orderBy("id", "desc")->paginate(10);
-        return view("products.index", compact("productCollection"));
+        $productCollection = (is_null($category_id)) ?
+            Product::with("category")->orderBy("id", "desc")->paginate(10) :
+            Product::with("category")->where("category_id", $category_id)->orderBy("id", "desc")->paginate(10);
+        $isCategoryFiltered = (!is_null($category_id));
+        return view("products.index", compact("productCollection", "isCategoryFiltered"));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         $categories = Category::orderBy("name")->pluck("name", "id");
         return view("products.create", compact("categories"));
@@ -30,14 +35,14 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProductRequest $request)
+    public function store(ProductRequest $request): RedirectResponse
     {
         $data = $request->validated();
         $data['stock'] = $data['stock'] ?? 0;
         $data['description'] = $data['description'] ?? '';
         $data['image'] = $request->hasFile('image')
             ? $request->file('image')->store('products/images')
-            : 'products/images/default.png';
+            : 'products/default.png';
         Product::create($data);
         return redirect()->route('products.index')->with('message', 'Product added successfully.');
     }
@@ -45,7 +50,7 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(Product $product): View
     {
         return view("products.show", compact("product"));
     }
@@ -53,7 +58,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(Product $product): View
     {
         $categories = Category::orderBy("name")->pluck("name", "id")->toArray();
         return view("products.edit", compact("product", "categories"));
@@ -62,7 +67,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductRequest $request, Product $product)
+    public function update(ProductRequest $request, Product $product): RedirectResponse
     {
         $data = $request->validated();
         $data['stock'] = $data['stock'] ?? 0;
@@ -81,7 +86,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product): RedirectResponse
     {
         $productImage = $product->image;
         if (basename($productImage) !== "default.png" && Storage::exists($productImage)) Storage::delete($productImage);

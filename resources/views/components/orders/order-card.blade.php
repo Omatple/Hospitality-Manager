@@ -12,7 +12,6 @@
         <p class="text-gray-600 mb-6 text-lg">Status: <span
                 class="font-bold {{ $order->status === 'pending' ? 'text-yellow-600' : 'text-green-600' }}">{{ ucfirst($order->status) }}</span>
         </p>
-
         <div class="mt-6">
             <h3 class="text-xl font-semibold text-gray-800 mb-6">Products Ordered:</h3>
             <div class="grid grid-cols-4 text-gray-800 font-semibold border-b pb-4 text-lg">
@@ -32,7 +31,6 @@
                 @endforeach
             </ul>
         </div>
-
         <div class="mt-10 pt-6">
             <p class="text-xl font-bold text-indigo-600 text-right">Total: {{ $order->total }}€</p>
         </div>

@@ -9,7 +9,6 @@
     $validColors = ['blue', 'green', 'red', 'yellow', 'indigo', 'purple', 'gray'];
     $color = in_array($color, $validColors) ? $color : 'red';
 @endphp
-
 <a href="{{ $url }}"
     class="inline-flex items-center px-4 py-2 
            bg-{{ $color }}-500 hover:bg-{{ $color }}-600 

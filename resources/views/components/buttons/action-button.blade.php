@@ -4,14 +4,14 @@
     'iconClass' => 'check',
     'label' => 'Save Changes',
     'name' => '',
+    'value' => '',
 ])
 
 @php
     $validColors = ['blue', 'green', 'red', 'yellow', 'indigo', 'purple', 'gray'];
     $color = in_array($color, $validColors) ? $color : 'blue';
 @endphp
-
-<button type="{{ $type }}" name="{{ $name }}"
+<button value="{{ $value }}" type="{{ $type }}" name="{{ $name }}"
     class="inline-flex items-center px-4 py-2 
            bg-{{ $color }}-500 hover:bg-{{ $color }}-600 
            text-white font-semibold text-sm rounded shadow-md 

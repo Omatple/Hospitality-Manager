@@ -7,7 +7,6 @@
             {{ $label }}
         </label>
     @endif
-
     <select name="{{ $name }}" id="{{ $name }}" {{ $required ? 'required' : '' }}
         class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 hover:border-indigo-400 hover:shadow-lg transition duration-200">
         <option value="" disabled selected>Select an option</option>
@@ -17,6 +16,5 @@
             </option>
         @endforeach
     </select>
-
     <x-form.error-message :field="$name" />
 </div>

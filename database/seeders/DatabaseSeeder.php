@@ -18,10 +18,8 @@ class DatabaseSeeder extends Seeder
     {
         Storage::deleteDirectory("users/images");
         Storage::deleteDirectory("products/images");
-
         Storage::makeDirectory("users/images");
         Storage::makeDirectory("products/images");
-
         User::factory()->count(6)->create();
         Table::factory()->count(8)->create();
         $this->call(CategorySeeder::class);

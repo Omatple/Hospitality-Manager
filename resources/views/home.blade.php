@@ -11,7 +11,6 @@
         <a href="{{ route('users.index') }}"
             class="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Explore</a>
     </div>
-
     <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition">
         <i class="fas fa-chair text-green-500 text-4xl"></i>
         <h2 class="mt-4 text-xl font-bold">Table Selection</h2>
@@ -19,7 +18,6 @@
         <a href="{{ route('tables.index') }}"
             class="inline-block mt-4 bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Explore</a>
     </div>
-
     <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition">
         <i class="fas fa-clipboard-list text-yellow-500 text-4xl"></i>
         <h2 class="mt-4 text-xl font-bold">Inventory</h2>

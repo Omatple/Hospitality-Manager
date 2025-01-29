@@ -11,24 +11,19 @@
 </head>
 
 <body class="bg-gray-100 text-gray-900">
-
     <x-navigation-menu />
-
     <header class="bg-gradient-to-r from-blue-500 to-green-400 text-white py-20">
         <div class="container mx-auto text-center">
             <h1 class="text-4xl font-bold">@yield('header_title')</h1>
             <p class="mt-4 text-lg">@yield('header_description')</p>
         </div>
     </header>
-
     <main class="py-10">
         <div class="@yield('container_classes')">
             @yield('content')
         </div>
     </main>
-
     <x-footer />
-
 </body>
 
 @yield('alert')

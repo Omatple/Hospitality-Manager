@@ -8,7 +8,7 @@
             {{ ucfirst($user->role) }}
         </div>
     </div>
-    <div class="p-6">
+    <div class="p-6 h-[130px]">
         <h2 class="text-xl font-semibold text-gray-800">
             {{ $user->first_name }} {{ $user->last_name }}
         </h2>

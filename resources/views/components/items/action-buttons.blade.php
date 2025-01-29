@@ -15,11 +15,9 @@
     @if ($infoShowButton)
         <x-buttons.info-button :url="$infoUrl" :buttonText="$infoButtonText" />
     @endif
-
     @if ($editShowButton)
         <x-buttons.edit-button :url="$editUrl" :buttonText="$editButtonText" />
     @endif
-
     @if ($deleteShowButton)
         <x-buttons.delete-button :url="$deleteUrl" :buttonText="$deleteButtonText" />
     @endif

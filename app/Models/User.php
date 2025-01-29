@@ -26,6 +26,7 @@ class User extends Authenticatable
         'role',
         'image',
     ];
+    public $timestamps = false;
 
     /**
      * Get all of the orders for the User

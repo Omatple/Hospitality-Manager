@@ -10,7 +10,7 @@
     <div class="absolute top-4 left-4 bg-indigo-600 text-white text-xs font-semibold py-1 px-3 rounded-full shadow-md">
         {{ ucfirst($user->role) }}
     </div>
-    <div class="p-6 bg-white rounded-b-lg">
+    <div class="p-6 bg-white rounded-b-lg h-[100px]">
         <h2 class="text-lg font-bold text-gray-800 text-center">
             {{ $user->first_name }} {{ $user->last_name }}
         </h2>

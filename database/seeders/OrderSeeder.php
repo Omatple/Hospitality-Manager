@@ -14,14 +14,16 @@ class OrderSeeder extends Seeder
     public function run(): void
     {
         $orders = Order::factory()->count(40)->create();
-        $products = Product::pluck("id")->toArray();
-        $numProducts = count($products);
-
-        $orders->each(function ($order) use ($products, $numProducts): void {
-            for ($i = 0; $i < $numProducts; $i++) {
-                $quantityProducts[] = random_int(1, 16);
+        $products = Product::pluck("price", "id")->toArray();
+        $orders->each(function ($order) use ($products): void {
+            $selectedProducts = [];
+            foreach ($products as $productId => $unitPrice) {
+                $selectedProducts[$productId] = [
+                    "quantity" => random_int(1, 16),
+                    "unit_price" => $unitPrice,
+                ];
             }
-            $order->syncProducts(array_combine($products, $quantityProducts));
+            $order->products()->sync($selectedProducts);
         });
     }
 }

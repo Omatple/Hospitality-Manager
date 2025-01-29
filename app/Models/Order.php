@@ -57,31 +57,52 @@ class Order extends Model
         $this->increment("total", $quantity * $product->price);
     }
 
-    public function syncProducts(array $dataProducts): void
+    public function syncOrderProducts(array $productData): void
     {
-        $productIds = array_keys($dataProducts);
-        $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
-        $productAttributes = [];
-        $total = 0;
-        foreach ($dataProducts as $id => $quantity) {
-            $product = $products->get($id);
-            if (!$product || $quantity <= 0) continue;
-            $productAttributes[$id] = [
+        $productIds = array_keys($productData);
+        $availableProducts = Product::whereIn('id', $productIds)->get()->keyBy('id');
+        $previousQuantities = $this->products()->pluck("quantity", "product_id")->toArray();
+        $updatedProducts = [];
+        $orderTotal = 0;
+        foreach ($productData as $productId => $quantity) {
+            $product = $availableProducts->get($productId);
+            if ($quantity <= 0 && !isset($previousQuantities[$productId])) {
+                continue;
+            }
+            $updatedProducts[$productId] = [
                 "quantity" => $quantity,
                 "unit_price" => $product->price,
             ];
-            $total += $quantity * $product->price;
+            $orderTotal += $quantity * $product->price;
         }
-        $this->products()->sync($productAttributes);
-        $this->update(["total" => $total]);
+        $this->products()->sync($updatedProducts);
+        $this->updateProductStock($previousQuantities);
+        $this->update(["total" => $orderTotal]);
     }
 
-    public function updateProductsStock(): void
+
+    public function updateProductStock(array $previousQuantities): void
     {
-        $products = $this->products;
-        foreach ($products as $product) {
-            $quantity = $product->pivot->quantity;
-            $product->decrement("stock", $quantity);
+        $orderProducts = $this->products;
+        foreach ($orderProducts as $product) {
+            $currentQuantity = $product->pivot->quantity;
+            $previousQuantity = $previousQuantities[$product->id] ?? 0;
+            $stockDifference = $currentQuantity - $previousQuantity;
+            if ($stockDifference > 0) {
+                $product->decrement("stock", $stockDifference);
+            } elseif ($stockDifference < 0) {
+                $product->increment("stock", abs($stockDifference));
+            }
         }
+        $this->products()
+            ->where("quantity", 0)
+            ->get()
+            ->each(fn($product) => $product->pivot->delete());
+    }
+
+
+    public function markAsServed(): void
+    {
+        $this->update(["status" => "served"]);
     }
 }

@@ -10,9 +10,7 @@
     <form action="{{ route('tables.update', $table) }}" method="POST" class="space-y-6">
         @csrf
         @method('PUT')
-
         <x-form.input type="number" label="Table Number: " placeholder="Enter table number" :required="true" name="number" :value="$table->number" />
-
         <div class="flex justify-end space-x-2">
             <x-buttons.action-button color="gray" iconClass="rotate-right" label="Reset" type="reset" />
             <x-buttons.action-button label="Update Changes" />

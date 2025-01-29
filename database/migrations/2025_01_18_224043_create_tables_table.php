@@ -18,7 +18,6 @@ return new class extends Migration
                 "available",
                 "occupied",
             ]);
-            $table->timestamps();
         });
     }
 

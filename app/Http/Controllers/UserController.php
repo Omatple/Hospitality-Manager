@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -11,7 +13,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $userCollection = User::orderBy("name")->get();
         return view("users.index", compact("userCollection"));
@@ -20,7 +22,7 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view("users.create");
     }
@@ -28,11 +30,11 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserRequest $request)
+    public function store(UserRequest $request): RedirectResponse
     {
         $data = $request->validated();
         $data["image"] = ($request->hasFile("image")) ? $request->file("image")->store("users/images") :
-            "users/images/default.png";
+            "users/default.png";
         User::create($data);
         return redirect()->route("users.index")->with("message", "User added successly");
     }
@@ -48,7 +50,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(User $user): View
     {
         return view("users.edit", compact("user"));
     }
@@ -56,7 +58,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserRequest $request, User $user)
+    public function update(UserRequest $request, User $user): RedirectResponse
     {
         $data = $request->validated();
         $oldImage = $user->image;
@@ -71,7 +73,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
         $userImage = $user->image;
         if (basename($userImage) !== 'default.png' && Storage::exists($userImage)) Storage::delete($userImage);

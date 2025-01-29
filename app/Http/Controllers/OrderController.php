@@ -34,9 +34,9 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        $orderCollection = Order::with("user", "table")->paginate(10);
+        $orderCollection = Order::with("user", "table")->orderBy('id', 'desc')->paginate(10);
         return view("orders.index", compact("orderCollection"));
     }
 
@@ -51,12 +51,12 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(OrderRequest $request, OrderService $orderService)
+    public function store(OrderRequest $request, OrderService $orderService): RedirectResponse
     {
         $data = $request->validated();
         $order = $orderService->createOrder($data, $orderService->validateProducts($request));
-        if ($data["finalize"] ?? false == null) {
-            $order->updateProductsStock();
+        if (isset($request->finalize)) {
+            $order->markAsServed();
             Table::find($data["table_id"])->markAsAvailable();
             return redirect()->route("tables.index")->with("message", "Order finalized successly");
         }
@@ -67,7 +67,7 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(Order $order): View
     {
         return view("orders.show", compact("order"));
     }
@@ -83,12 +83,12 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(OrderRequest $request, OrderService $orderService, Order $order)
+    public function update(OrderRequest $request, OrderService $orderService, Order $order): RedirectResponse
     {
         $data = $request->validated();
         $orderService->updateOrder($orderService->validateProducts($request), $order);
-        if ($data["finalize"] ?? false == null) {
-            $order->updateProductsStock();
+        if (isset($request->finalize)) {
+            $order->markAsServed();
             Table::find($data["table_id"])->markAsAvailable();
             return redirect()->route("tables.index")->with("message", "Order finalized successly");
         }
@@ -98,8 +98,9 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy(Order $order): RedirectResponse
     {
+        if ($order->status == 'pending') $order->table->markAsAvailable();
         $order->delete();
         return redirect()->route("orders.index")->with("message", "Order deleted successly");
     }

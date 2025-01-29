@@ -26,7 +26,6 @@ return new class extends Migration
             $table->string("image");
             $table->unique(["first_name", "last_name"], "first_name_last_name_unique");
             $table->rememberToken();
-            $table->timestamps();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

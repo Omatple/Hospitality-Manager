@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TableRequest;
 use App\Models\Table;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class TableController extends Controller
 {
@@ -20,7 +21,7 @@ class TableController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view("tables.create");
     }
@@ -28,7 +29,7 @@ class TableController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(TableRequest $request)
+    public function store(TableRequest $request): RedirectResponse
     {
         $data = $request->validated();
         Table::create(array_merge($data, ["status" => "available"]));
@@ -46,7 +47,7 @@ class TableController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Table $table)
+    public function edit(Table $table): View
     {
         return view("tables.edit", compact("table"));
     }
@@ -54,7 +55,7 @@ class TableController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(TableRequest $request, Table $table)
+    public function update(TableRequest $request, Table $table): RedirectResponse
     {
         $data = $request->validated();
         $table->update($data);
@@ -64,7 +65,7 @@ class TableController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Table $table)
+    public function destroy(Table $table): RedirectResponse
     {
         $table->delete();
         return redirect()->route("tables.index")->with("message", "Table deleted successly");

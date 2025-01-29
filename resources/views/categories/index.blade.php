@@ -7,10 +7,8 @@
     <div class="flex justify-end">
         <x-buttons.add-button :url="route('categories.create')" buttonText="Add Category" />
     </div>
-
     <x-categories.categories-overview :categoryCollection="$categoryCollection" />
 @endsection
-
 @section('alert')
     <x-alerts.success-alert />
 @endsection

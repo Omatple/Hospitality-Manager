@@ -7,7 +7,6 @@
             {{ $label }}
         </label>
     @endif
-
     <input type="color" name="{{ $name }}" id="{{ $name }}" value="{{ old($name, $value) }}"
         {{ $required ? 'required' : '' }}
         class="w-full h-12 px-3 bg-gray-50 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 hover:border-indigo-400 hover:shadow-lg transition duration-200 cursor-pointer">
