@@ -61,11 +61,12 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user): RedirectResponse
     {
         $data = $request->validated();
+        if ($request->password === null) unset($data["password"]);
         $oldImage = $user->image;
         $data["image"] = ($request->hasFile("image")) ?
             $request->file("image")->store("users/images") :
             $oldImage;
-        if (basename($oldImage) !== 'default.png' && Storage::exists($oldImage)) Storage::delete($oldImage);
+        if ($request->hasFile("image") && basename($oldImage) !== 'default.png' && Storage::exists($oldImage)) Storage::delete($oldImage);
         $user->update($data);
         return redirect()->route("users.index")->with("message", "User updated succesly");
     }

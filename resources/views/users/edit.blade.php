@@ -15,7 +15,7 @@
         <x-form.input name="last_name" label="Last Name" placeholder="Enter last name" :required="true" :value="$user->last_name" />
         <x-form.input type="email" name="email" label="Email Address" placeholder="Enter email address"
             :required="true" :value="$user->email" />
-        <x-form.input type="password" name="password" label="Password" placeholder="Enter password" :required="true" />
+        <x-form.input type="password" name="password" label="Password" placeholder="Enter password" />
         <x-form.select-input name="role" label="Role" :options="['waiter' => 'waiter', 'bartender' => 'bartender', 'barista' => 'barista']" :required="true" :selected="$user->role" />
         <x-form.image-input name="image" label="Profile Picture" :defaultImage="Storage::url($user->image)" />
         <div class="flex justify-end space-x-4">

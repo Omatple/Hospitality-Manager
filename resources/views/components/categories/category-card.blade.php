@@ -1,7 +1,7 @@
 @props(['category'])
 
 <div
-    class="relative w-full h-40 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
+    class="cursor-pointer relative w-full h-40 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
     <div class="absolute inset-0 bg-[{{ $category->colour }}]"></div>
     <div class="absolute flex justify-between w-full z-10">
         <a href="{{ route('products.index', ['category_id' => $category->id]) }}"

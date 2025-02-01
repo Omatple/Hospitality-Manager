@@ -20,7 +20,7 @@
     </td>
     <td class="px-4 py-3">
         <span onclick="window.location.href = '{{ route('products.index', $product->category_id) }}'"
-            class="px-2 py-1 rounded-full text-sm font-medium bg-[{{ $product->category->colour }}] text-gray-100">
+            class="cursor-pointer px-2 py-1 rounded-full text-sm font-medium bg-[{{ $product->category->colour }}] text-gray-100">
             {{ $product->category->name }}
         </span>
     </td>

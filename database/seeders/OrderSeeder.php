@@ -17,13 +17,17 @@ class OrderSeeder extends Seeder
         $products = Product::pluck("price", "id")->toArray();
         $orders->each(function ($order) use ($products): void {
             $selectedProducts = [];
+            $orderTotal = 0;
             foreach ($products as $productId => $unitPrice) {
+                $randomQuantity = random_int(1, 16);
+                $orderTotal += $randomQuantity * $unitPrice;
                 $selectedProducts[$productId] = [
-                    "quantity" => random_int(1, 16),
+                    "quantity" => $randomQuantity,
                     "unit_price" => $unitPrice,
                 ];
             }
             $order->products()->sync($selectedProducts);
+            $order->update(["total" => $orderTotal]);
         });
     }
 }
